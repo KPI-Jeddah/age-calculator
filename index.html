@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
- 
-    <title>أهلية التسجيل للطلاب المستجدين للعام الدراسي 1448هـ</title>
-    <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/3135/3135810.png">
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>مقياس أعمار المستجدين</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22>🎓</text></svg>">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             --primary-blue: #e3f2fd;
@@ -34,17 +34,17 @@
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             width: 100%;
-            max-width: 500px;
+            max-width: 480px;
             text-align: center;
         }
 
-        h1 { color: var(--accent-blue); font-size: 1.5rem; margin-bottom: 20px; }
+        h1 { color: var(--accent-blue); font-size: 1.4rem; margin-bottom: 20px; }
 
         .section {
             background: #fff;
-            padding: 18px;
+            padding: 20px;
             border-radius: 12px;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             border: 1px solid #eee;
         }
 
@@ -66,6 +66,7 @@
             border-radius: 8px;
             background: #fff;
             font-size: 0.85rem;
+            cursor: pointer;
         }
 
         button {
@@ -103,25 +104,28 @@
             border-right: 5px solid #2e7d32;
         }
 
-        .dept-info { margin-top: 25px; font-weight: bold; color: var(--accent-blue); font-size: 0.9rem; }
+        .dept-info {
+            margin-top: 25px;
+            font-weight: bold;
+            color: var(--accent-blue);
+            font-size: 0.9rem;
+        }
+
         footer { margin-top: 5px; font-size: 0.7rem; color: #999; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1><i class="fas fa-user-graduate"></i> أهلية التسجيل للطلاب المستجدين للعام الدراسي 1448هـ</h1>
+    <h1><i class="fas fa-child-reaching"></i> مقياس أعمار المستجدين</h1>
 
     <div class="section">
-    <h2><i class="fas fa-calendar-alt"></i> محول التاريخ الهجري إلى ميلادي</h2>
-    <div class="input-row">
-        <select id="hDay"></select>
-        <select id="hMonth"></select>
-        <select id="hYear"></select>
-    </div>
-    <button onclick="convertToGregorian()"><i class="fas fa-exchange-alt"></i> تحويل إلى ميلادي</button>
-    <div id="convResult" class="result-box"></div>
-</div>
+        <h2><i class="fas fa-calendar-alt"></i> محول التاريخ الهجري إلى ميلادي</h2>
+        <div class="input-row">
+            <select id="hDay"></select>
+            <select id="hMonth"></select>
+            <select id="hYear"></select>
+        </div>
         <button onclick="convertToGregorian()"><i class="fas fa-exchange-alt"></i> تحويل إلى ميلادي</button>
         <div id="convResult" class="result-box"></div>
     </div>
@@ -133,7 +137,7 @@
             <select id="gMonthCalc"></select>
             <select id="gYearCalc"></select>
         </div>
-        <button class="btn-green" onclick="checkEligibility()"><i class="fas fa-search-plus"></i> تحليل العمر والاستحقاق</button>
+        <button class="btn-green" onclick="checkEligibility()"><i class="fas fa-search-plus"></i> تحليل الأهلية لعام 1448هـ</button>
         
         <div id="ageDetailResult" class="result-box">
             <div id="ageFull"></div>
@@ -141,8 +145,8 @@
         </div>
     </div>
 
-    <div class="dept-info">الإدارة العامة للتعليم بمحافظة جدة - إدارة التطوير والتحول - قسم قياس الأداء المؤسسي</div>
-    <footer></footer>
+    <div class="dept-info">إعداد / قسم قياس الأداء المؤسسي</div>
+    <footer>حقوق التصميم محفوظة © 2026</footer>
 </div>
 
 <script>
@@ -167,61 +171,84 @@
         for(let i=2030; i>=2010; i--) gYear.innerHTML += `<option value="${i}">${i}</option>`;
     };
 
-   function checkEligibility() {
-    const d = parseInt(document.getElementById('gDayCalc').value);
-    const m = parseInt(document.getElementById('gMonthCalc').value);
-    const y = parseInt(document.getElementById('gYearCalc').value);
-    
-    const birthDate = new Date(y, m - 1, d);
-    
-    // التواريخ المعيارية
-    const limitFullSix = new Date(2020, 7, 24);      
-    const limitNinetyDays = new Date(2020, 10, 22);   
-    const limitKG3 = new Date(2021, 7, 24);          
-    const limitKG2 = new Date(2022, 7, 24);          
-    const limitKG1 = new Date(2023, 7, 24);          
+    // كود تحويل التاريخ الهجري المحدث
+    function convertToGregorian() {
+        const d = parseInt(document.getElementById('hDay').value);
+        const m = parseInt(document.getElementById('hMonth').value);
+        const y = parseInt(document.getElementById('hYear').value);
+        const resDiv = document.getElementById('convResult');
 
-    let ageMessage = "";
-    let gradeMessage = "";
-    let showGrade = true; // متغير للتحكم في ظهور سطر الاستحقاق
+        let jd = Math.floor((11 * y + 3) / 30) + 354 * y + 30 * m - Math.floor((m - 1) / 2) + d + 1948440 - 385;
+        let l = jd + 68569;
+        let n = Math.floor((4 * l) / 146097);
+        l = l - Math.floor((146097 * n + 3) / 4);
+        let i = Math.floor((4000 * (l + 1)) / 1461001);
+        l = l - Math.floor((1461 * i) / 4) + 31;
+        let j = Math.floor((80 * l) / 2447);
+        let day = l - Math.floor((2447 * j) / 80);
+        l = Math.floor(j / 11);
+        let month = j + 2 - 12 * l;
+        let year = 100 * (n - 49) + i + l;
 
-    if (birthDate <= limitFullSix) {
-        ageMessage = "أكمل الطفل (6) سنوات.";
-        gradeMessage = "الاستحقاق: تسجيل مباشر في الصف الأول الابتدائي.";
-    } 
-    else if (birthDate > limitFullSix && birthDate <= limitNinetyDays) {
-        ageMessage = "أقل من (6) سنوات بـ (90) يوماً.";
-        gradeMessage = "الاستحقاق: تسجيل في الصف الأول الابتدائي (قبول مشروط).";
-    } 
-    else if (birthDate > limitNinetyDays && birthDate <= limitKG3) {
-        ageMessage = "الفئة العمرية للمستوى الثالث.";
-        gradeMessage = "الاستحقاق: رياض الأطفال - المستوى الثالث (تمهيدي).";
-    } 
-    else if (birthDate > limitKG3 && birthDate <= limitKG2) {
-        ageMessage = "الفئة العمرية للمستوى الثاني.";
-        gradeMessage = "الاستحقاق: رياض الأطفال - المستوى الثاني (KG2).";
-    } 
-    else if (birthDate > limitKG2 && birthDate <= limitKG1) {
-        ageMessage = "الفئة العمرية للمستوى الأول.";
-        gradeMessage = "الاستحقاق: رياض الأطفال - المستوى الأول (KG1).";
-    } 
-    else {
-        ageMessage = "العمر دون السن النظامي للقبول.";
-        showGrade = false; // تفعيل إخفاء الاستحقاق
+        resDiv.style.display = "block";
+        resDiv.innerHTML = `<i class="fas fa-check-circle"></i> التاريخ الميلادي المقابل: <br> <strong>${day} / ${month} / ${year} م</strong>`;
     }
 
-    // عرض النتائج
-    document.getElementById('ageDetailResult').style.display = "block";
-    document.getElementById('ageFull').innerHTML = `<i class="fas fa-calendar-check"></i> الحالة: <strong>${ageMessage}</strong>`;
-    
-    const gradeDiv = document.getElementById('gradeFull');
-    if(showGrade) {
-        gradeDiv.style.display = "block";
-        gradeDiv.innerHTML = `<i class="fas fa-graduation-cap"></i> ${gradeMessage}`;
-    } else {
-        gradeDiv.style.display = "none"; // إخفاء المربع تماماً
+    // كود تحليل الأهلية المحدث بالشروط الجديدة وإخفاء الاستحقاق
+    function checkEligibility() {
+        const d = parseInt(document.getElementById('gDayCalc').value);
+        const m = parseInt(document.getElementById('gMonthCalc').value);
+        const y = parseInt(document.getElementById('gYearCalc').value);
+        
+        const birthDate = new Date(y, m - 1, d);
+        
+        const limitFullSix = new Date(2020, 7, 24);      
+        const limitNinetyDays = new Date(2020, 10, 22);   
+        const limitKG3 = new Date(2021, 7, 24);          
+        const limitKG2 = new Date(2022, 7, 24);          
+        const limitKG1 = new Date(2023, 7, 24);          
+
+        let ageMessage = "";
+        let gradeMessage = "";
+        let showGrade = true;
+
+        if (birthDate <= limitFullSix) {
+            ageMessage = "أكمل الطفل (6) سنوات.";
+            gradeMessage = "الاستحقاق: تسجيل مباشر في الصف الأول الابتدائي.";
+        } 
+        else if (birthDate > limitFullSix && birthDate <= limitNinetyDays) {
+            ageMessage = "أقل من (6) سنوات بـ (90) يوماً.";
+            gradeMessage = "الاستحقاق: تسجيل في الصف الأول الابتدائي (قبول مشروط).";
+        } 
+        else if (birthDate > limitNinetyDays && birthDate <= limitKG3) {
+            ageMessage = "الفئة العمرية للمستوى الثالث.";
+            gradeMessage = "الاستحقاق: رياض الأطفال - المستوى الثالث (تمهيدي).";
+        } 
+        else if (birthDate > limitKG3 && birthDate <= limitKG2) {
+            ageMessage = "الفئة العمرية للمستوى الثاني.";
+            gradeMessage = "الاستحقاق: رياض الأطفال - المستوى الثاني (KG2).";
+        } 
+        else if (birthDate > limitKG2 && birthDate <= limitKG1) {
+            ageMessage = "الفئة العمرية للمستوى الأول.";
+            gradeMessage = "الاستحقاق: رياض الأطفال - المستوى الأول (KG1).";
+        } 
+        else {
+            ageMessage = "العمر دون السن النظامي للقبول.";
+            showGrade = false; 
+        }
+
+        document.getElementById('ageDetailResult').style.display = "block";
+        document.getElementById('ageFull').innerHTML = `<i class="fas fa-calendar-check"></i> الحالة: <strong>${ageMessage}</strong>`;
+        
+        const gradeDiv = document.getElementById('gradeFull');
+        if(showGrade) {
+            gradeDiv.style.display = "block";
+            gradeDiv.innerHTML = `<i class="fas fa-graduation-cap"></i> ${gradeMessage}`;
+        } else {
+            gradeDiv.style.display = "none";
+        }
     }
-}
 </script>
+
 </body>
 </html>
