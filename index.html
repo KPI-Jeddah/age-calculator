@@ -7,18 +7,16 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22>🎓</text></svg>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* تعريف الألوان حسب الهوية المطلوبة */
         :root {
-            --bg-page: #c2c1c1;          /* لون خلفية الصفحة */
-            --border-section: #69cee3;   /* لون إطار القسمين */
-            --title-main: #351375;       /* لون العنوان الرئيسي */
-            --text-normal: #15445a;      /* لون الخط العادي */
-            --text-dept: #218caa;        /* لون خط القسم في الأسفل */
+            --bg-page: #c2c1c1;          
+            --brand-color: #69cee3;      /* لون التعبئة والإطار المطلوبة */
+            --title-main: #351375;       
+            --text-normal: #15445a;      
+            --text-dept: #218caa;        
             --accent-green: #2e7d32;
         }
 
         body {
-            /* تعيين الخط المطلوب مع البدائل المتاحة */
             font-family: "Helvetica Neue W23 for SKY", "Helvetica Neue", Helvetica, Arial, sans-serif;
             background-color: var(--bg-page);
             color: var(--text-normal);
@@ -49,22 +47,22 @@
         }
 
         .section {
-            background: #f9f9f9;
+            background-color: var(--brand-color); /* تعبئة الإطار باللون المطلوب */
             padding: 20px;
             border-radius: 10px;
             margin-bottom: 25px;
-            border: 2px solid var(--border-section); /* لون الإطار المطلوب */
+            border: 2px solid var(--brand-color); 
         }
 
         h2 { 
             font-size: 1rem; 
-            color: var(--text-normal); 
+            color: var(--title-main); /* لون العنوان داخل القسم ليكون متناسقاً */
             margin-bottom: 18px; 
             padding-bottom: 8px;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid rgba(21, 68, 90, 0.2);
+            font-weight: bold;
         }
 
-        /* تنسيق العناوين فوق القوائم المنسدلة */
         .dropdown-label {
             display: block;
             text-align: right;
@@ -91,7 +89,7 @@
         select {
             width: 100%;
             padding: 10px;
-            border: 1px solid #ccc;
+            border: 1px solid #ffffff;
             border-radius: 6px;
             background: #fff;
             font-size: 0.9rem;
@@ -104,7 +102,7 @@
             padding: 12px;
             border: none;
             border-radius: 8px;
-            background-color: var(--text-normal);
+            background-color: var(--title-main);
             color: white;
             font-size: 1rem;
             font-weight: bold;
@@ -114,10 +112,10 @@
         }
 
         button.btn-check { 
-            background-color: var(--accent-green); 
+            background-color: var(--text-normal); 
         }
 
-        button:hover { opacity: 0.9; }
+        button:hover { opacity: 0.9; transform: translateY(-1px); }
 
         .result-box {
             margin-top: 15px;
@@ -126,7 +124,7 @@
             background: #fff;
             display: none;
             text-align: right;
-            border-right: 5px solid var(--border-section);
+            border-right: 5px solid var(--title-main);
             font-size: 0.95rem;
         }
 
@@ -134,12 +132,12 @@
             display: inline-block;
             margin-top: 15px;
             padding: 10px 20px;
-            background-color: transparent;
+            background-color: white;
             color: var(--text-normal);
             text-decoration: none;
             border-radius: 8px;
             font-weight: bold;
-            border: 1px dashed var(--text-normal);
+            border: 1px solid var(--text-normal);
             transition: 0.3s;
         }
 
@@ -152,8 +150,8 @@
 
         .dept-info { 
             font-weight: bold; 
-            color: var(--text-dept); /* لون خط القسم المطلوب */
-            font-size: 0.9rem; 
+            color: var(--text-dept); 
+            font-size: 0.85rem; 
             line-height: 1.8;
         }
 
@@ -181,7 +179,7 @@
                 <select id="hYear"></select>
             </div>
         </div>
-        <button onclick="convertToGregorian()">تحويل إلى ميلادي <i class="fas fa-arrow-left"></i></button>
+        <button onclick="convertToGregorian()">تحويل إلى ميلادي <i class="fas fa-exchange-alt"></i></button>
         <div id="convResult" class="result-box"></div>
     </div>
 
@@ -189,15 +187,15 @@
         <h2><i class="fas fa-calculator"></i> حساب الأهلية (ميلادي)</h2>
         <div class="input-row">
             <div class="input-item">
-                <span class="dropdown-label">يوم الميلاد</span>
+                <span class="dropdown-label">اليوم</span>
                 <select id="gDayCalc"></select>
             </div>
             <div class="input-item">
-                <span class="dropdown-label">شهر الميلاد</span>
+                <span class="dropdown-label">الشهر</span>
                 <select id="gMonthCalc"></select>
             </div>
             <div class="input-item">
-                <span class="dropdown-label">سنة الميلاد</span>
+                <span class="dropdown-label">السنة</span>
                 <select id="gYearCalc"></select>
             </div>
         </div>
@@ -232,20 +230,17 @@
         const gMonth = document.getElementById('gMonthCalc');
         const gYear = document.getElementById('gYearCalc');
 
-        // تعبئة الأيام
         for(let i=1; i<=31; i++) {
             hDay.innerHTML += i <= 30 ? `<option value="${i}">${i}</option>` : "";
             gDay.innerHTML += `<option value="${i}">${i}</option>`;
         }
         
-        // تعبئة الشهور
         const monthsH = ["محرم","صفر","ربيع الأول","ربيع الثاني","جمادى الأولى","جمادى الآخرة","رجب","شعبان","رمضان","شوال","ذو القعدة","ذو الحجة"];
         const monthsG = ["يناير","فبراير","مارس","أبريل","مايو","يونيو","يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"];
         
         monthsH.forEach((m, i) => hMonth.innerHTML += `<option value="${i+1}">${m}</option>`);
         monthsG.forEach((m, i) => gMonth.innerHTML += `<option value="${i+1}">${m}</option>`);
         
-        // تعبئة السنوات
         for(let i=1460; i>=1390; i--) hYear.innerHTML += `<option value="${i}">${i}</option>`;
         for(let i=2023; i>=2017; i--) gYear.innerHTML += `<option value="${i}">${i}</option>`;
     };
@@ -278,7 +273,6 @@
         const y = parseInt(document.getElementById('gYearCalc').value);
         const birthDate = new Date(y, m - 1, d);
         
-        // التواريخ المعيارية
         const limitFullSix = new Date(2020, 7, 24);      
         const limitNinetyDays = new Date(2020, 10, 22);   
         const limitKG3 = new Date(2021, 7, 24);          
