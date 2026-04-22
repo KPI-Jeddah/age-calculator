@@ -9,7 +9,7 @@
     <style>
         :root {
             --bg-page: #c2c1c1;          
-            --brand-color: #69cee3;      /* لون التعبئة والإطار المطلوبة */
+            --brand-color: #69cee3;      
             --title-main: #351375;       
             --text-normal: #15445a;      
             --text-dept: #218caa;        
@@ -47,7 +47,7 @@
         }
 
         .section {
-            background-color: var(--brand-color); /* تعبئة الإطار باللون المطلوب */
+            background-color: var(--brand-color); 
             padding: 20px;
             border-radius: 10px;
             margin-bottom: 25px;
@@ -56,7 +56,7 @@
 
         h2 { 
             font-size: 1rem; 
-            color: var(--title-main); /* لون العنوان داخل القسم ليكون متناسقاً */
+            color: var(--title-main); 
             margin-bottom: 18px; 
             padding-bottom: 8px;
             border-bottom: 1px solid rgba(21, 68, 90, 0.2);
@@ -230,19 +230,27 @@
         const gMonth = document.getElementById('gMonthCalc');
         const gYear = document.getElementById('gYearCalc');
 
+        // تعبئة الأيام
         for(let i=1; i<=31; i++) {
             hDay.innerHTML += i <= 30 ? `<option value="${i}">${i}</option>` : "";
             gDay.innerHTML += `<option value="${i}">${i}</option>`;
         }
         
+        // تعبئة الشهور
         const monthsH = ["محرم","صفر","ربيع الأول","ربيع الثاني","جمادى الأولى","جمادى الآخرة","رجب","شعبان","رمضان","شوال","ذو القعدة","ذو الحجة"];
         const monthsG = ["يناير","فبراير","مارس","أبريل","مايو","يونيو","يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"];
         
         monthsH.forEach((m, i) => hMonth.innerHTML += `<option value="${i+1}">${m}</option>`);
         monthsG.forEach((m, i) => gMonth.innerHTML += `<option value="${i+1}">${m}</option>`);
         
+        // تعبئة السنوات الهجرية
         for(let i=1460; i>=1390; i--) hYear.innerHTML += `<option value="${i}">${i}</option>`;
-        for(let i=2023; i>=2017; i--) gYear.innerHTML += `<option value="${i}">${i}</option>`;
+        
+        // تعبئة السنوات الميلادية (عشر سنوات مسبقة وعشر سنوات لاحقة من 2026)
+        const currentYear = new Date().getFullYear();
+        for(let i = currentYear + 10; i >= currentYear - 10; i--) {
+            gYearCalc.innerHTML += `<option value="${i}">${i}</option>`;
+        }
     };
 
     function convertToGregorian() {
@@ -273,6 +281,7 @@
         const y = parseInt(document.getElementById('gYearCalc').value);
         const birthDate = new Date(y, m - 1, d);
         
+        // التواريخ المعيارية للعام الدراسي 1448هـ
         const limitFullSix = new Date(2020, 7, 24);      
         const limitNinetyDays = new Date(2020, 10, 22);   
         const limitKG3 = new Date(2021, 7, 24);          
