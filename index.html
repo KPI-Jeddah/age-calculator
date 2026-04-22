@@ -3,14 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> أهلية التسجيل للطلاب المستجدين للعام الدراسي 1448هـ</title>
+    <title>أهلية التسجيل للطلاب المستجدين 1448هـ</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22>🎓</text></svg>">
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             --primary-blue: #e3f2fd;
-            --secondary-green: #e8f5e9;
+            --secondary-blue: #bbdefb;
             --accent-blue: #1976d2;
             --accent-green: #2e7d32;
             --text-main: #37474f;
@@ -18,7 +17,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-green));
+            background: linear-gradient(135deg, var(--primary-blue), #c8e6c9);
             color: var(--text-main);
             min-height: 100vh;
             margin: 0;
@@ -34,21 +33,21 @@
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             width: 100%;
-            max-width: 480px;
+            max-width: 500px;
             text-align: center;
         }
 
-        h1 { color: var(--accent-blue); font-size: 1.4rem; margin-bottom: 20px; }
+        h1 { color: var(--accent-blue); font-size: 1.3rem; margin-bottom: 20px; line-height: 1.5; }
 
         .section {
-            background: #fff;
+            background: var(--secondary-blue);
             padding: 20px;
             border-radius: 12px;
             margin-bottom: 20px;
-            border: 1px solid #eee;
+            border: 1px solid #90caf9;
         }
 
-        h2 { font-size: 0.95rem; color: var(--accent-green); margin-bottom: 15px; border-bottom: 1px solid #f0f0f0; padding-bottom: 5px; }
+        h2 { font-size: 0.95rem; color: var(--accent-blue); margin-bottom: 15px; border-bottom: 1px solid #90caf9; padding-bottom: 5px; }
         
         .input-row {
             display: flex;
@@ -62,11 +61,10 @@
             flex: 1;
             min-width: 80px;
             padding: 10px;
-            border: 1px solid #ccc;
+            border: 1px solid #90caf9;
             border-radius: 8px;
             background: #fff;
             font-size: 0.85rem;
-            cursor: pointer;
         }
 
         button {
@@ -88,37 +86,37 @@
             margin-top: 15px;
             padding: 12px;
             border-radius: 8px;
-            background: #f1f8ff;
+            background: #fff;
             display: none;
             text-align: right;
             border-right: 5px solid var(--accent-blue);
         }
 
-        .grade-highlight {
-            background-color: #e8f5e9;
-            color: #2e7d32;
+        .registration-link {
+            display: block;
+            margin-top: 15px;
             padding: 10px;
-            border-radius: 5px;
-            margin-top: 10px;
-            font-weight: bold;
-            border-right: 5px solid #2e7d32;
-        }
-
-        .dept-info {
-            margin-top: 25px;
-            font-weight: bold;
+            background-color: #fff;
             color: var(--accent-blue);
-            font-size: 0.9rem;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            border: 1px dashed var(--accent-blue);
+            transition: 0.3s;
         }
 
+        .registration-link:hover { background-color: var(--accent-blue); color: #fff; }
+
+        hr { border: 0; border-top: 1px solid #ddd; margin: 25px 0 15px 0; }
+
+        .dept-info { font-weight: bold; color: var(--accent-blue); font-size: 0.85rem; line-height: 1.6; }
         footer { margin-top: 5px; font-size: 0.7rem; color: #999; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1><i class="fas fa-child-reaching"></i> أهلية التسجيل للطلاب المستجدين للعام الدراسي 1448هـ
-</h1>
+    <h1><i class="fas fa-graduation-cap"></i> أهلية التسجيل للطلاب المستجدين للعام الدراسي 1448هـ</h1>
 
     <div class="section">
         <h2><i class="fas fa-calendar-alt"></i> محول التاريخ الهجري إلى ميلادي</h2>
@@ -138,15 +136,25 @@
             <select id="gMonthCalc"></select>
             <select id="gYearCalc"></select>
         </div>
-        <button class="btn-green" onclick="checkEligibility()"><i class="fas fa-search-plus"></i> تحليل الأهلية لعام 1448هـ</button>
+        <button class="btn-green" onclick="checkEligibility()"><i class="fas fa-search-plus"></i> تحليل الأهلية النظامية</button>
         
         <div id="ageDetailResult" class="result-box">
             <div id="ageFull"></div>
-            <div id="gradeFull" class="grade-highlight"></div>
+            <div id="gradeFull" style="color: var(--accent-green); margin-top: 5px; font-weight: bold;"></div>
         </div>
+
+        <a href="https://edugate.moe.gov.sa/services" target="_blank" class="registration-link">
+            <i class="fas fa-external-link-alt"></i> الرابط الرسمي للتسجيل (نظام نور)
+        </a>
     </div>
 
-    <div class="dept-info">الإدارة العامة للتعليم بمحافظة جدة - إدارة التطوير والتحول - قسم قياس الأداء المؤسسي</div>
+    <hr>
+
+    <div class="dept-info">
+        الإدارة العامة للتعليم بمحافظة جدة<br>
+        إدارة التطوير والتحول<br>
+        قسم قياس الأداء المؤسسي
+    </div>
     <footer></footer>
 </div>
 
@@ -159,20 +167,19 @@
         const gMonth = document.getElementById('gMonthCalc');
         const gYear = document.getElementById('gYearCalc');
 
-        const monthsH = ["محرم","صفر","ربيع الأول","ربيع الثاني","جمادى الأولى","جمادى الآخرة","رجب","شعبان","رمضان","شوال","ذو القعدة","ذو الحجة"];
-        const monthsG = ["يناير","فبراير","مارس","أبريل","مايو","يونيو","يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"];
-
         for(let i=1; i<=31; i++) {
             hDay.innerHTML += i <= 30 ? `<option value="${i}">${i}</option>` : "";
             gDay.innerHTML += `<option value="${i}">${i}</option>`;
         }
+        const monthsH = ["محرم","صفر","ربيع الأول","ربيع الثاني","جمادى الأولى","جمادى الآخرة","رجب","شعبان","رمضان","شوال","ذو القعدة","ذو الحجة"];
+        const monthsG = ["يناير","فبراير","مارس","أبريل","مايو","يونيو","يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"];
+        
         monthsH.forEach((m, i) => hMonth.innerHTML += `<option value="${i+1}">${m}</option>`);
         monthsG.forEach((m, i) => gMonth.innerHTML += `<option value="${i+1}">${m}</option>`);
         for(let i=1460; i>=1390; i--) hYear.innerHTML += `<option value="${i}">${i}</option>`;
-        for(let i=2030; i>=2010; i--) gYear.innerHTML += `<option value="${i}">${i}</option>`;
+        for(let i=2023; i>=2017; i--) gYear.innerHTML += `<option value="${i}">${i}</option>`;
     };
 
-    // كود تحويل التاريخ الهجري المحدث
     function convertToGregorian() {
         const d = parseInt(document.getElementById('hDay').value);
         const m = parseInt(document.getElementById('hMonth').value);
@@ -192,15 +199,13 @@
         let year = 100 * (n - 49) + i + l;
 
         resDiv.style.display = "block";
-        resDiv.innerHTML = `<i class="fas fa-check-circle"></i> التاريخ الميلادي المقابل: <br> <strong>${day} / ${month} / ${year} م</strong>`;
+        resDiv.innerHTML = `<i class="fas fa-check-circle"></i> التاريخ الميلادي: <strong>${day} / ${month} / ${year} م</strong>`;
     }
 
-    // كود تحليل الأهلية المحدث بالشروط الجديدة وإخفاء الاستحقاق
     function checkEligibility() {
         const d = parseInt(document.getElementById('gDayCalc').value);
         const m = parseInt(document.getElementById('gMonthCalc').value);
         const y = parseInt(document.getElementById('gYearCalc').value);
-        
         const birthDate = new Date(y, m - 1, d);
         
         const limitFullSix = new Date(2020, 7, 24);      
@@ -239,7 +244,7 @@
         }
 
         document.getElementById('ageDetailResult').style.display = "block";
-        document.getElementById('ageFull').innerHTML = `<i class="fas fa-calendar-check"></i> الحالة: <strong>${ageMessage}</strong>`;
+        document.getElementById('ageFull').innerHTML = `الحالة: <strong>${ageMessage}</strong>`;
         
         const gradeDiv = document.getElementById('gradeFull');
         if(showGrade) {
@@ -250,6 +255,5 @@
         }
     }
 </script>
-
 </body>
 </html>
