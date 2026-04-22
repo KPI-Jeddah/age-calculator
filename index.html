@@ -113,12 +113,15 @@
     <h1><i class="fas fa-user-graduate"></i> أهلية التسجيل للطلاب المستجدين للعام الدراسي 1448هـ</h1>
 
     <div class="section">
-        <h2><i class="fas fa-calendar-alt"></i> محول التاريخ الهجري إلى ميلادي</h2>
-        <div class="input-row">
-            <select id="hDay"></select>
-            <select id="hMonth"></select>
-            <select id="hYear"></select>
-        </div>
+    <h2><i class="fas fa-calendar-alt"></i> محول التاريخ الهجري إلى ميلادي</h2>
+    <div class="input-row">
+        <select id="hDay"></select>
+        <select id="hMonth"></select>
+        <select id="hYear"></select>
+    </div>
+    <button onclick="convertToGregorian()"><i class="fas fa-exchange-alt"></i> تحويل إلى ميلادي</button>
+    <div id="convResult" class="result-box"></div>
+</div>
         <button onclick="convertToGregorian()"><i class="fas fa-exchange-alt"></i> تحويل إلى ميلادي</button>
         <div id="convResult" class="result-box"></div>
     </div>
