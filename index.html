@@ -167,40 +167,58 @@
     const m = parseInt(document.getElementById('gMonthCalc').value);
     const y = parseInt(document.getElementById('gYearCalc').value);
     
-    // تحويل مدخلات المستخدم إلى تاريخ ميلاد
+    // تاريخ ميلاد الطفل المدخل
     const birthDate = new Date(y, m - 1, d);
     
-    // التواريخ المعيارية حسب شروط الوزارة
-    const limitFullSix = new Date(2020, 7, 24); // 24/08/2020 (6 سنوات كاملة)
-    const limitNinetyDays = new Date(2020, 10, 22); // 22/11/2020 (أقل بـ 90 يوماً)
-    const limitKG3 = new Date(2021, 7, 24); // 24/08/2021 (المستوى الثالث)
+    // التواريخ المعيارية المحددة (نقاط التحول)
+    const limitFullSix = new Date(2020, 7, 24);      // 24/08/2020 (6 سنوات كاملة)
+    const limitNinetyDays = new Date(2020, 10, 22);   // 22/11/2020 (استثناء الـ 90 يوماً)
+    const limitKG3 = new Date(2021, 7, 24);          // 24/08/2021 (المستوى الثالث)
+    const limitKG2 = new Date(2022, 7, 24);          // 24/08/2022 (المستوى الثاني)
+    const limitKG1 = new Date(2023, 7, 24);          // 24/08/2023 (المستوى الأول)
 
     let ageMessage = "";
     let gradeMessage = "";
-    let statusClass = "";
+    let alertMessage = "";
 
-    // منطق التحقق من الشروط
+    // منطق التحقق بناءً على الشروط الجديدة
     if (birthDate <= limitFullSix) {
-        ageMessage = "أكمل الطفل 6 سنوات أو أكثر.";
-        gradeMessage = "النتيجة: مستحق للتسجيل في الصف الأول الابتدائي.";
+        ageMessage = "أكمل الطفل (6) سنوات.";
+        gradeMessage = "الاستحقاق: تسجيل مباشر في الصف الأول الابتدائي.";
     } 
     else if (birthDate > limitFullSix && birthDate <= limitNinetyDays) {
-        ageMessage = "أقل من 6 سنوات بـ 90 يوماً أو أقل.";
-        gradeMessage = "النتيجة: مستحق للتسجيل (قبول مشروط بـ 90 يوماً).";
+        ageMessage = "أقل من (6) سنوات بـ (90) يوماً.";
+        gradeMessage = "الاستحقاق: تسجيل في الصف الأول الابتدائي (قبول مشروط).";
+        alertMessage = "ملاحظة: يتطلب هذا العمر مهارات نمائية محددة وشهادة روضة.";
     } 
     else if (birthDate > limitNinetyDays && birthDate <= limitKG3) {
-        ageMessage = "العمر يقع ضمن فئة المستوى الثالث.";
-        gradeMessage = "النتيجة: مستحق للتسجيل في رياض الأطفال (المستوى الثالث).";
+        ageMessage = "الفئة العمرية للمستوى الثالث.";
+        gradeMessage = "الاستحقاق: رياض الأطفال - المستوى الثالث (KG3 / تمهيدي).";
+    } 
+    else if (birthDate > limitKG3 && birthDate <= limitKG2) {
+        ageMessage = "الفئة العمرية للمستوى الثاني.";
+        gradeMessage = "الاستحقاق: رياض الأطفال - المستوى الثاني (KG2).";
+    } 
+    else if (birthDate > limitKG2 && birthDate <= limitKG1) {
+        ageMessage = "الفئة العمرية للمستوى الأول.";
+        gradeMessage = "الاستحقاق: رياض الأطفال - المستوى الأول (KG1).";
     } 
     else {
-        ageMessage = "العمر لم يبلغ السن النظامي للقبول حالياً.";
-        gradeMessage = "النتيجة: غير مستحق للتسجيل في الفئات المذكورة.";
+        ageMessage = "العمر دون السن النظامي للقبول.";
+        gradeMessage = "الاستحقاق: غير متاح للتسجيل حالياً في هذه المستويات.";
     }
 
-    // عرض النتيجة في الصفحة
+    // عرض النتائج في البطاقة المخصصة
     document.getElementById('ageDetailResult').style.display = "block";
-    document.getElementById('ageFull').innerHTML = `<i class="fas fa-info-circle"></i> حالة الطفل: ${ageMessage}`;
-    document.getElementById('gradeFull').innerHTML = `<i class="fas fa-graduation-cap"></i> ${gradeMessage}`;
+    document.getElementById('ageFull').innerHTML = `
+        <i class="fas fa-calendar-check"></i> الحالة: <strong>${ageMessage}</strong>
+    `;
+    
+    let finalHtml = `<i class="fas fa-graduation-cap"></i> ${gradeMessage}`;
+    if(alertMessage) {
+        finalHtml += `<div style="font-size: 0.8rem; margin-top: 5px; color: #d32f2f;">${alertMessage}</div>`;
+    }
+    document.getElementById('gradeFull').innerHTML = finalHtml;
 }
     function convertToGregorian() {
         const d = parseInt(document.getElementById('hDay').value);
