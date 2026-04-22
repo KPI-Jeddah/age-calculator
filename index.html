@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حاسبة أعمار الطلاب المستجدين</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-blue: #e3f2fd;
+            --secondary-green: #e8f5e9;
+            --accent-blue: #1976d2;
+            --accent-green: #2e7d32;
+            --text-main: #37474f;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-green));
+            color: var(--text-main);
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.98);
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        h1 { color: var(--accent-blue); font-size: 1.5rem; margin-bottom: 20px; }
+
+        .section {
+            background: #fff;
+            padding: 18px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #eee;
+        }
+
+        h2 { font-size: 0.95rem; color: var(--accent-green); margin-bottom: 15px; border-bottom: 1px solid #f0f0f0; padding-bottom: 5px; }
+        
+        .input-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+            justify-content: center;
+        }
+
+        select {
+            flex: 1;
+            min-width: 80px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background: #fff;
+            font-size: 0.85rem;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background-color: var(--accent-blue);
+            color: white;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        button.btn-green { background-color: var(--accent-green); }
+
+        .result-box {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            background: #f1f8ff;
+            display: none;
+            text-align: right;
+            border-right: 5px solid var(--accent-blue);
+        }
+
+        .grade-highlight {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-weight: bold;
+            border-right: 5px solid #2e7d32;
+        }
+
+        .dept-info { margin-top: 25px; font-weight: bold; color: var(--accent-blue); font-size: 0.9rem; }
+        footer { margin-top: 5px; font-size: 0.7rem; color: #999; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1><i class="fas fa-user-graduate"></i> حاسبة أعمار الطلاب المستجدين</h1>
+
+    <div class="section">
+        <h2><i class="fas fa-calendar-alt"></i> محول التاريخ الهجري إلى ميلادي</h2>
+        <div class="input-row">
+            <select id="hDay"></select>
+            <select id="hMonth"></select>
+            <select id="hYear"></select>
+        </div>
+        <button onclick="convertToGregorian()"><i class="fas fa-exchange-alt"></i> تحويل إلى ميلادي</button>
+        <div id="convResult" class="result-box"></div>
+    </div>
+
+    <div class="section">
+        <h2><i class="fas fa-calculator"></i> حساب العمر والصف المستحق (ميلادي)</h2>
+        <div class="input-row">
+            <select id="gDayCalc"></select>
+            <select id="gMonthCalc"></select>
+            <select id="gYearCalc"></select>
+        </div>
+        <button class="btn-green" onclick="checkEligibility()"><i class="fas fa-search-plus"></i> تحليل العمر والاستحقاق</button>
+        
+        <div id="ageDetailResult" class="result-box">
+            <div id="ageFull"></div>
+            <div id="gradeFull" class="grade-highlight"></div>
+        </div>
+    </div>
+
+    <div class="dept-info">إعداد / قسم قياس الأداء المؤسسي</div>
+    <footer>حقوق التصميم محفوظة © 2026</footer>
+</div>
+
+<script>
+    window.onload = function() {
+        const hDay = document.getElementById('hDay');
+        const hMonth = document.getElementById('hMonth');
+        const hYear = document.getElementById('hYear');
+        const gDay = document.getElementById('gDayCalc');
+        const gMonth = document.getElementById('gMonthCalc');
+        const gYear = document.getElementById('gYearCalc');
+
+        const monthsH = ["محرم","صفر","ربيع الأول","ربيع الثاني","جمادى الأولى","جمادى الآخرة","رجب","شعبان","رمضان","شوال","ذو القعدة","ذو الحجة"];
+        const monthsG = ["يناير","فبراير","مارس","أبريل","مايو","يونيو","يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"];
+
+        for(let i=1; i<=31; i++) {
+            hDay.innerHTML += i <= 30 ? `<option value="${i}">${i}</option>` : "";
+            gDay.innerHTML += `<option value="${i}">${i}</option>`;
+        }
+        monthsH.forEach((m, i) => hMonth.innerHTML += `<option value="${i+1}">${m}</option>`);
+        monthsG.forEach((m, i) => gMonth.innerHTML += `<option value="${i+1}">${m}</option>`);
+        for(let i=1460; i>=1390; i--) hYear.innerHTML += `<option value="${i}">${i}</option>`;
+        for(let i=2030; i>=2010; i--) gYear.innerHTML += `<option value="${i}">${i}</option>`;
+    };
+
+    function checkEligibility() {
+        const d = parseInt(document.getElementById('gDayCalc').value);
+        const m = parseInt(document.getElementById('gMonthCalc').value);
+        const y = parseInt(document.getElementById('gYearCalc').value);
+        
+        // تاريخ بداية العام الدراسي المفترض 1448هـ (مثلاً 1 سبتمبر 2026)
+        const schoolDate = new Date(2026, 8, 1); 
+        const birthDate = new Date(y, m - 1, d);
+        
+        let years = schoolDate.getFullYear() - birthDate.getFullYear();
+        let months = schoolDate.getMonth() - birthDate.getMonth();
+        let days = schoolDate.getDate() - birthDate.getDate();
+
+        if (days < 0) {
+            months--;
+            days += new Date(schoolDate.getFullYear(), schoolDate.getMonth(), 0).getDate();
+        }
+        if (months < 0) {
+            years--;
+            months += 12;
+        }
+
+        document.getElementById('ageDetailResult').style.display = "block";
+        document.getElementById('ageFull').innerHTML = `<i class="fas fa-clock"></i> العمر في 1448/01/01هـ:<br> <strong>${years} سنة، و ${months} شهر، و ${days} يوم</strong>`;
+
+        let grade = "";
+        if (years >= 6) grade = "المرحلة المستحقة: الصف الأول الابتدائي";
+        else if (years == 5) grade = "المرحلة المستحقة: رياض أطفال المستوى الثالث (KG3 / تمهيدي)";
+        else if (years == 4) grade = "المرحلة المستحقة: رياض أطفال المستوى الثاني (KG2)";
+        else if (years == 3) grade = "المرحلة المستحقة: رياض أطفال المستوى الأول (KG1)";
+        else grade = "السن دون سن القبول في رياض الأطفال";
+
+        document.getElementById('gradeFull').innerHTML = `<i class="fas fa-graduation-cap"></i> ${grade}`;
+    }
+
+    function convertToGregorian() {
+        const d = parseInt(document.getElementById('hDay').value);
+        const m = parseInt(document.getElementById('hMonth').value);
+        const y = parseInt(document.getElementById('hYear').value);
+        
+        let jd = Math.floor((11 * y + 3) / 30) + 354 * y + 30 * m - Math.floor((m - 1) / 2) + d + 1948440 - 385;
+        let l = jd + 68569;
+        let n = Math.floor((4 * l) / 146097);
+        l = l - Math.floor((146097 * n + 3) / 4);
+        let i = Math.floor((4000 * (l + 1)) / 1461001);
+        l = l - Math.floor((1461 * i) / 4) + 31;
+        let j = Math.floor((80 * l) / 2447);
+        let day = l - Math.floor((2447 * j) / 80);
+        l = Math.floor(j / 11);
+        let month = j + 2 - 12 * l;
+        let year = 100 * (n - 49) + i + l;
+
+        const res = document.getElementById('convResult');
+        res.style.display = "block";
+        res.innerHTML = `التاريخ الميلادي المقابل: ${day}/${month}/${year} م`;
+    }
+</script>
+</body>
+</html>
