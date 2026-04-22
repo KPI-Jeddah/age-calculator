@@ -163,40 +163,45 @@
     };
 
     function checkEligibility() {
-        const d = parseInt(document.getElementById('gDayCalc').value);
-        const m = parseInt(document.getElementById('gMonthCalc').value);
-        const y = parseInt(document.getElementById('gYearCalc').value);
-        
-        // تاريخ بداية العام الدراسي المفترض 1448هـ (مثلاً 1 سبتمبر 2026)
-        const schoolDate = new Date(2026, 8, 1); 
-        const birthDate = new Date(y, m - 1, d);
-        
-        let years = schoolDate.getFullYear() - birthDate.getFullYear();
-        let months = schoolDate.getMonth() - birthDate.getMonth();
-        let days = schoolDate.getDate() - birthDate.getDate();
+    const d = parseInt(document.getElementById('gDayCalc').value);
+    const m = parseInt(document.getElementById('gMonthCalc').value);
+    const y = parseInt(document.getElementById('gYearCalc').value);
+    
+    // تحويل مدخلات المستخدم إلى تاريخ ميلاد
+    const birthDate = new Date(y, m - 1, d);
+    
+    // التواريخ المعيارية حسب شروط الوزارة
+    const limitFullSix = new Date(2020, 7, 24); // 24/08/2020 (6 سنوات كاملة)
+    const limitNinetyDays = new Date(2020, 10, 22); // 22/11/2020 (أقل بـ 90 يوماً)
+    const limitKG3 = new Date(2021, 7, 24); // 24/08/2021 (المستوى الثالث)
 
-        if (days < 0) {
-            months--;
-            days += new Date(schoolDate.getFullYear(), schoolDate.getMonth(), 0).getDate();
-        }
-        if (months < 0) {
-            years--;
-            months += 12;
-        }
+    let ageMessage = "";
+    let gradeMessage = "";
+    let statusClass = "";
 
-        document.getElementById('ageDetailResult').style.display = "block";
-        document.getElementById('ageFull').innerHTML = `<i class="fas fa-clock"></i> العمر في 1448/01/01هـ:<br> <strong>${years} سنة، و ${months} شهر، و ${days} يوم</strong>`;
-
-        let grade = "";
-        if (years >= 6) grade = "المرحلة المستحقة: الصف الأول الابتدائي";
-        else if (years == 5) grade = "المرحلة المستحقة: رياض أطفال المستوى الثالث (KG3 / تمهيدي)";
-        else if (years == 4) grade = "المرحلة المستحقة: رياض أطفال المستوى الثاني (KG2)";
-        else if (years == 3) grade = "المرحلة المستحقة: رياض أطفال المستوى الأول (KG1)";
-        else grade = "السن دون سن القبول في رياض الأطفال";
-
-        document.getElementById('gradeFull').innerHTML = `<i class="fas fa-graduation-cap"></i> ${grade}`;
+    // منطق التحقق من الشروط
+    if (birthDate <= limitFullSix) {
+        ageMessage = "أكمل الطفل 6 سنوات أو أكثر.";
+        gradeMessage = "النتيجة: مستحق للتسجيل في الصف الأول الابتدائي.";
+    } 
+    else if (birthDate > limitFullSix && birthDate <= limitNinetyDays) {
+        ageMessage = "أقل من 6 سنوات بـ 90 يوماً أو أقل.";
+        gradeMessage = "النتيجة: مستحق للتسجيل (قبول مشروط بـ 90 يوماً).";
+    } 
+    else if (birthDate > limitNinetyDays && birthDate <= limitKG3) {
+        ageMessage = "العمر يقع ضمن فئة المستوى الثالث.";
+        gradeMessage = "النتيجة: مستحق للتسجيل في رياض الأطفال (المستوى الثالث).";
+    } 
+    else {
+        ageMessage = "العمر لم يبلغ السن النظامي للقبول حالياً.";
+        gradeMessage = "النتيجة: غير مستحق للتسجيل في الفئات المذكورة.";
     }
 
+    // عرض النتيجة في الصفحة
+    document.getElementById('ageDetailResult').style.display = "block";
+    document.getElementById('ageFull').innerHTML = `<i class="fas fa-info-circle"></i> حالة الطفل: ${ageMessage}`;
+    document.getElementById('gradeFull').innerHTML = `<i class="fas fa-graduation-cap"></i> ${gradeMessage}`;
+}
     function convertToGregorian() {
         const d = parseInt(document.getElementById('hDay').value);
         const m = parseInt(document.getElementById('hMonth').value);
