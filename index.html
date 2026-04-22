@@ -164,64 +164,7 @@
         for(let i=2030; i>=2010; i--) gYear.innerHTML += `<option value="${i}">${i}</option>`;
     };
 
-    function checkEligibility() {
-    const d = parseInt(document.getElementById('gDayCalc').value);
-    const m = parseInt(document.getElementById('gMonthCalc').value);
-    const y = parseInt(document.getElementById('gYearCalc').value);
-    
-    // تاريخ ميلاد الطفل المدخل
-    const birthDate = new Date(y, m - 1, d);
-    
-    // التواريخ المعيارية المحددة (نقاط التحول)
-    const limitFullSix = new Date(2020, 7, 24);      // 24/08/2020 (6 سنوات كاملة)
-    const limitNinetyDays = new Date(2020, 10, 22);   // 22/11/2020 (استثناء الـ 90 يوماً)
-    const limitKG3 = new Date(2021, 7, 24);          // 24/08/2021 (المستوى الثالث)
-    const limitKG2 = new Date(2022, 7, 24);          // 24/08/2022 (المستوى الثاني)
-    const limitKG1 = new Date(2023, 7, 24);          // 24/08/2023 (المستوى الأول)
-
-    let ageMessage = "";
-    let gradeMessage = "";
-    let alertMessage = "";
-
-    // منطق التحقق بناءً على الشروط الجديدة
-    if (birthDate <= limitFullSix) {
-        ageMessage = "أكمل الطفل (6) سنوات.";
-        gradeMessage = "الاستحقاق: تسجيل مباشر في الصف الأول الابتدائي.";
-    } 
-    else if (birthDate > limitFullSix && birthDate <= limitNinetyDays) {
-        ageMessage = "أقل من (6) سنوات بـ (90) يوماً.";
-        gradeMessage = "الاستحقاق: تسجيل في الصف الأول الابتدائي (قبول مشروط).";
-        alertMessage = "ملاحظة: يتطلب هذا العمر مهارات نمائية محددة وشهادة روضة.";
-    } 
-    else if (birthDate > limitNinetyDays && birthDate <= limitKG3) {
-        ageMessage = "الفئة العمرية للمستوى الثالث.";
-        gradeMessage = "الاستحقاق: رياض الأطفال - المستوى الثالث (KG3 / تمهيدي).";
-    } 
-    else if (birthDate > limitKG3 && birthDate <= limitKG2) {
-        ageMessage = "الفئة العمرية للمستوى الثاني.";
-        gradeMessage = "الاستحقاق: رياض الأطفال - المستوى الثاني (KG2).";
-    } 
-    else if (birthDate > limitKG2 && birthDate <= limitKG1) {
-        ageMessage = "الفئة العمرية للمستوى الأول.";
-        gradeMessage = "الاستحقاق: رياض الأطفال - المستوى الأول (KG1).";
-    } 
-    else {
-        ageMessage = "العمر دون السن النظامي للقبول.";
-        gradeMessage = "الاستحقاق: غير متاح للتسجيل حالياً في هذه المستويات.";
-    }
-
-    // عرض النتائج في البطاقة المخصصة
-    document.getElementById('ageDetailResult').style.display = "block";
-    document.getElementById('ageFull').innerHTML = `
-        <i class="fas fa-calendar-check"></i> الحالة: <strong>${ageMessage}</strong>
-    `;
-    
-    let finalHtml = `<i class="fas fa-graduation-cap"></i> ${gradeMessage}`;
-    if(alertMessage) {
-        finalHtml += `<div style="font-size: 0.8rem; margin-top: 5px; color: #d32f2f;">${alertMessage}</div>`;
-    }
-    document.getElementById('gradeFull').innerHTML = finalHtml;
-}
+    checkEligibility
     function convertToGregorian() {
         const d = parseInt(document.getElementById('hDay').value);
         const m = parseInt(document.getElementById('hMonth').value);
